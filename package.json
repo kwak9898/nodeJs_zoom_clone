@@ -1,0 +1,14 @@
+{
+  "name": "nodeJs_zoom_clone",
+  "version": "1.0.0",
+  "description": "Zoom Clone using WebRTC and WebSockets",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kwak9898/nodeJs_zoom_clone.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kwak9898/nodeJs_zoom_clone/issues"
+  },
+  "homepage": "https://github.com/kwak9898/nodeJs_zoom_clone#readme"
+}
