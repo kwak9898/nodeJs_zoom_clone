@@ -7,6 +7,9 @@
     "url": "git+https://github.com/kwak9898/nodeJs_zoom_clone.git"
   },
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon"
+  },
   "bugs": {
     "url": "https://github.com/kwak9898/nodeJs_zoom_clone/issues"
   },
@@ -15,6 +18,7 @@
     "@babel/cli": "^7.18.9",
     "@babel/core": "^7.18.9",
     "@babel/node": "^7.18.9",
+    "@babel/preset-env": "^7.18.9",
     "nodemon": "^2.0.19"
   }
 }
