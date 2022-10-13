@@ -24,7 +24,7 @@ wss.on("connection", (socket) => {
         console.log("Disconnected from the Browser ❌");
     });
     socket.on("message", (message) => {
-        socket.send(message.toString());
+        sockets.forEach((aSocket) => aSocket.send(message.toString()));
     });
 });
 
