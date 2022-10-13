@@ -9,5 +9,5 @@ socket.addEventListener("message", (message) => {
 });
 
 socket.addEventListener("close", () => {
-    console.log("Disconnected from Server ❌");
+    console.log("Disconnected from the Browser ❌");
 });
