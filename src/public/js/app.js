@@ -11,3 +11,7 @@ socket.addEventListener("message", (message) => {
 socket.addEventListener("close", () => {
     console.log("Disconnected from the Browser ❌");
 });
+
+setTimeout(() => {
+    socket.send("Hello from the browser!")
+}, 10000)
