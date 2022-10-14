@@ -24,7 +24,7 @@ io.on("connection", socket => {
     socket.on("enter_room", (roomName, done) => {
         console.log(roomName)
         setTimeout(() => {
-            done();
+            done("Hello From Backend");
         }, 10000)
     });
 })
