@@ -1,6 +1,7 @@
 import http from "http";
 import SocketIO from "socket.io";
 import express from "express";
+import {msg} from "@babel/core/lib/config/validation/option-assertions";
 
 const app = express();
 
@@ -20,7 +21,7 @@ const io = SocketIO(HttpServer);
  * Use Socket.IO
  */
 io.on("connection", socket => {
-    console.log(socket);
+    socket.on("enter_room", msg => console.log(msg));
 })
 
 /**
