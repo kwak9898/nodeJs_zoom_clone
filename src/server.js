@@ -21,7 +21,12 @@ const io = SocketIO(HttpServer);
  * Use Socket.IO
  */
 io.on("connection", socket => {
-    socket.on("enter_room", msg => console.log(msg));
+    socket.on("enter_room", (roomName, done) => {
+        console.log(roomName)
+        setTimeout(() => {
+            done();
+        }, 10000)
+    });
 })
 
 /**
