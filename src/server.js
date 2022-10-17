@@ -20,6 +20,7 @@ const io = SocketIO(HttpServer);
  * Use Socket.IO
  */
 io.on("connection", socket => {
+    io.socketsJoin("announcement");
     socket["nickname"] = "Anonymous";
     socket.onAny(event => console.log(`Socket Event: ${event}`));
     socket.on("enter_room", (roomName, done) => {
