@@ -16,9 +16,11 @@ function addMessage(message) {
 function handleMessageSubmit(event) {
     event.preventDefault();
     const input = room.querySelector("input");
+    const value = input.value;
     socket.emit("new_message", input.value, roomName, () => {
-        addMessage(`You: ${input.value}`);
+        addMessage(`You: ${value}`);
     });
+    input.value = "";
 }
 
 function showRoom() {
