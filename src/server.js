@@ -21,12 +21,8 @@ const io = SocketIO(HttpServer);
  * Use Socket.IO
  */
 io.on("connection", socket => {
-    socket.on("enter_room", (roomName, done) => {
-        console.log(roomName)
-        setTimeout(() => {
-            done("Hello From Backend");
-        }, 10000)
-    });
+    socket.onAny(event => console.log(`Socket Event: ${event}`));
+    socket.on("enter_room", roomName => socket.join(roomName));
 })
 
 /**
