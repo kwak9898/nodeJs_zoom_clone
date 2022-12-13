@@ -1,6 +1,7 @@
 import http from "http";
-import SocketIO from "socket.io";
+import { Server } from "socket.io";
 import express from "express";
+import { instrument } from "@socket.io/admin-ui";
 
 const app = express();
 
@@ -13,11 +14,20 @@ app.get("/*", (_, res) => res.redirect("/"));
 const handleListen = () => console.log(`Listening on http://localhost:3000`);
 
 const HttpServer = http.createServer(app);
-const io = SocketIO(HttpServer);
+const wsServer = new Server(HttpServer, {
+    cors: {
+        origin: ["https://admin.socket.io"],
+        credentials: true,
+    },
+});
+
+instrument(wsServer, {
+    auth: false
+})
 
 function publicRooms() {
-    const sids = io.sockets.adapter.sids;
-    const rooms = io.sockets.adapter.rooms;
+    const sids = wsServer.sockets.adapter.sids;
+    const rooms = wsServer.sockets.adapter.rooms;
     const publicRooms = [];
     rooms.forEach((_, key) => {
         if (sids.get(key) === undefined) {
@@ -28,23 +38,23 @@ function publicRooms() {
 }
 
 function countRoom(roomName) {
-    return io.sockets.adapter.rooms.get(roomName)?.size;
+    return wsServer.sockets.adapter.rooms.get(roomName)?.size;
 }
 
 /**
  * Use Socket.IO
  */
-io.on("connection", socket => {
+wsServer.on("connection", socket => {
     socket["nickname"] = "Anonymous";
     socket.onAny(event => {
-        console.log(io.sockets.adapter);
+        console.log(wsServer.sockets.adapter);
         console.log(`Socket Event: ${event}`);
     });
     socket.on("enter_room", (roomName, done) => {
         socket.join(roomName);
         done();
         socket.to(roomName).emit("welcome", socket.nickname, countRoom(roomName));
-        io.sockets.emit("room_change", publicRooms());
+        wsServer.sockets.emit("room_change", publicRooms());
     });
     socket.on("disconnecting", () => {
         socket.rooms.forEach((room) => {
@@ -52,7 +62,7 @@ io.on("connection", socket => {
         });
     });
     socket.on("disconnect", () => {
-        io.sockets.emit("room_change", publicRooms());
+        wsServer.sockets.emit("room_change", publicRooms());
     });
     socket.on("new_message", (msg, room, done) => {
         socket.to(room).emit("new_message", `${socket.nickname}: ${msg}`);
