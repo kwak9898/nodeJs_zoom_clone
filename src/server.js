@@ -15,6 +15,17 @@ const handleListen = () => console.log(`Listening on http://localhost:3000`);
 const HttpServer = http.createServer(app);
 const io = SocketIO(HttpServer);
 
+function publicRooms() {
+    const sids = io.sockets.adapter.sids;
+    const rooms = io.sockets.adapter.rooms;
+    const publicRooms = [];
+    rooms.forEach((_, key) => {
+        if (sids.get(key) === undefined) {
+            publicRooms.push(key);
+        }
+    })
+    return publicRooms;
+}
 
 /**
  * Use Socket.IO
@@ -22,7 +33,10 @@ const io = SocketIO(HttpServer);
 io.on("connection", socket => {
     io.socketsJoin("announcement");
     socket["nickname"] = "Anonymous";
-    socket.onAny(event => console.log(`Socket Event: ${event}`));
+    socket.onAny(event => {
+        console.log(io.sockets.adapter);
+        console.log(`Socket Event: ${event}`);
+    });
     socket.on("enter_room", (roomName, done) => {
         socket.join(roomName);
         done();
